@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyo
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Django stuff:
+db.sqlite3
+*.log
+
+# Environment variables
+.env
+
+# VS Code / IDE settings
+.vscode/
+.idea/
+
+# Static files (optional if generated during deployment)
+staticfiles/
+static/
+
+# Docker
+*.pid
+docker-compose.yml
+
+# Requirements
+requirments/
+
+# PyCharm stuff
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Migrations (optional if generated)
+**/migrations/*.py
+**/migrations/*.pyc
+
+# Files directory if used for uploads
+files/
+templates/
