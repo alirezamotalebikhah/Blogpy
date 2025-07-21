@@ -25,6 +25,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('blog/', include('blog.urls')),
     path('', include('blog.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 
 ]
 if settings.DEBUG:

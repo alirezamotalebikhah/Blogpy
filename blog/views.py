@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 class IndexPage(TemplateView):
 
@@ -35,3 +38,22 @@ class IndexPage(TemplateView):
             'promote_article_data' : promote_data,
         }
         return render(request,'index.html',context)
+class AllArticleAPIView(APIView):
+    def get(self , request , format=None):
+        try:
+            all_article=Article.objects.all().order_by('-created_at')[:10]
+            data=[]
+            for article in all_article:
+                data.append({
+                    "title":article.title,
+                    "cover":article.cover.url if article.cover else None,
+                    "content":article.content,
+                    "created_at":article.created_at.strftime('%B %d, %Y'),
+                    "category":article.category.title,
+                    "author":article.author.user.first_name + " " + article.author.user.last_name,
+                    "promote":article.promote,
+                })
+            return Response({'data':data} , status=status.HTTP_200_OK)
+        except :
+            return Response({'status':'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
