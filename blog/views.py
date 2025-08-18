@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.template.defaultfilters import title
 from django.views.generic import TemplateView
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from . import serializers
 # Create your views here.
 class IndexPage(TemplateView):
 
@@ -57,3 +59,13 @@ class AllArticleAPIView(APIView):
         except :
             return Response({'status':'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class SingleArticleAPIView(APIView):
+    def get(self,request , format=None):
+        try:
+            article_title=request.GET['article_title']
+            article=Article.objects.filter(title__contains=article_title)
+            serialized_data=serializers.SingleArticleSerializer(article , many=True)
+            data=serialized_data.data
+            return Response({'data':data}, status=status.HTTP_200_OK)
+        except:
+            return Response({'status':'Internal Server Error'} , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
