@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.template.defaultfilters import title
 from django.views.generic import TemplateView
 from .models import *
 from rest_framework.views import APIView
@@ -90,3 +89,53 @@ class SearchArticleAPIView(APIView):
 
         except:
             return Response({'status':'Internal Server Error'} , status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class SubmitArticleAPIView(APIView):
+    def post(self,request , format=None):
+
+        try:
+            serializer=serializers.SubmitArticleSerializer(data=request.data)
+            if serializer.is_valid():
+                title=serializer.data.get('title')
+                cover=request.FILES['cover']
+                content=serializer.data.get('content')
+                category_id=serializer.data.get('category_id')
+                author_id=serializer.data.get('author_id')
+                promote=serializer.data.get('promote')
+            else:
+                return Response({'status':'Bad Request'}, status=status.HTTP_200_OK)
+            user = User.objects.get(id=author_id)
+            author = UserProfile.objects.get(user=user)
+            category = Category.objects.get(id=category_id)
+            article=Article()
+            article.title=title
+            article.cover=cover
+            article.content=content
+            article.category=category
+            article.author=author
+            article.promote=promote
+            article.save()
+            return Response({'status':'OK'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+
+            return Response({'status':'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class   UpdateArticleAPIView(APIView):
+    def post(self,request , format=None):
+        try:
+            serializer=serializers.UpdateArticleCoverSerializer(data=request.data)
+            if  serializer.is_valid():
+                article_id=serializer.data.get('article_id')
+                cover=request.FILES['cover']
+
+            else:
+                return Response({'status':'Bad Request'}, status=status.HTTP_200_OK)
+
+            article = Article.objects.get(id=article_id)
+            article.cover = request.FILES['cover']
+            article.save()
+            return Response({'status':'OK'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({'status':'Internal Server Error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
