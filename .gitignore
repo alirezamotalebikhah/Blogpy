@@ -31,7 +31,7 @@ static/
 docker-compose.yml
 
 # Requirements
-requirments/
+requirements/
 
 # PyCharm stuff
 *.iml
