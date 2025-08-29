@@ -9,4 +9,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 RUN python manage.py collectstatic  --noinput
-CMD ["gunicorn" , "--bind" , ":9000" , "blog.djangoProject.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:9000", "--chdir", "/blog", "djangoProject.wsgi:application"]
