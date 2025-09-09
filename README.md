@@ -77,7 +77,7 @@ The application runs on three Docker containers:
 - **PostgreSQL** (Port 5432) - Database
 
 
-```
+
 
 ## Acknowledgments
 
